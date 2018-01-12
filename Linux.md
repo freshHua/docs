@@ -18,5 +18,17 @@ Name[en]=Eclipse
 
 ###Eclipse导入maven的项目
 Eclipse 菜单FILE -> Import -> Maven -> Existing Maven Projects
-
+###Ping出现DUP!
+ping应答出现了重复的包duplicate
+###Ubuntu WiFi热点
+修改配置文件
+~~~
+/etc/NetworkManager/system-connections/
+mode=ap(mode改为ap)
+~~~
+###正则表达式
+![Python正则表达式](./images/pattern.png)
+###EXT4加密属性
+强制加密forceencrypt=footer，无法修改或删除文件
+encryptable=footer
 
