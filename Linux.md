@@ -31,4 +31,13 @@ mode=ap(mode改为ap)
 ###EXT4加密属性
 强制加密forceencrypt=footer，无法修改或删除文件
 encryptable=footer
+###信号
+* SIGSEGV
+内存错误，数值越接
+###CPU占用率
+/proc/stat
+
+user nice system idle iowait  irq  softirq steal guest guest_nice
+
+
 

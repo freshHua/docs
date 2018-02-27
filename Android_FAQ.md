@@ -20,3 +20,48 @@ wlan0     Link encap:UNSPEC
 		  
 TX packets dropped　内核主动丢掉
 RX packets 
+
+###扫描二维玛
+在比较暗处无法扫描二维码，
+
+### cgroup
+cpu 参数rt_runtime_us　实时进程一次能占有CPU的最长时间，缺省是1秒
+cpuset 
+### minikin
+~~~ shell
+    #00 pc 000000000000a78c  /system/lib64/libminikin.so (_ZNK7android14FontCollection17calcCoverageScoreEjjPNS_10FontFamilyE+112)
+    #01 pc 000000000000a638  /system/lib64/libminikin.so (_ZNK7android14FontCollection15calcFamilyScoreEjjijPNS_10FontFamilyE+44)
+    #02 pc 000000000000aaf8  /system/lib64/libminikin.so (_ZNK7android14FontCollection16getFamilyForCharEjjji+416)
+    #03 pc 000000000000b294  /system/lib64/libminikin.so (_ZNK7android14FontCollection7itemizeEPKtmNS_9FontStyleEPNSt3__16vectorINS0_3RunENS4_9allocatorIS6_EEEE+656)
+    #04 pc 00000000000139fc  /system/lib64/libminikin.so (_ZN7android6Layout11doLayoutRunEPKtmmmbPNS_13LayoutContextE+140)
+    #05 pc 000000000001392c  /system/lib64/libminikin.so
+    #06 pc 0000000000013358  /system/lib64/libminikin.so (_ZN7android6Layout12doLayoutWordEPKtmmmbPNS_13LayoutContextEmPKNS_14FontCollectionEPS0_Pf+452)
+    #07 pc 0000000000012e00  /system/lib64/libminikin.so (_ZN7android6Layout17doLayoutRunCachedEPKtmmmbPNS_13LayoutContextEmPKNS_14FontCollectionEPS0_Pf+456)
+    #08 pc 0000000000013030  /system/lib64/libminikin.so (_ZN7android6Layout11measureTextEPKtmmmiRKNS_9FontStyleERKNS_12MinikinPaintEPKNS_14FontCollectionEPf+488)
+    #09 pc 000000000002f7c0  /system/lib64/libhwui.so (_ZN7android12MinikinUtils11measureTextEPKNS_5PaintEiPNS_8TypefaceEPKtmmmPf+164)
+    #10 pc 00000000001174ac  /system/lib64/libandroid_runtime.so
+~~~
+~~~shell
+$:export PATH=${PATH}:prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
+~~~
+~~~shell
+$:aarch64-linux-android-addr2line -e ${TARGET_OUTPUT}/symbols/system/lib64/libminikin.so -a 000000000000a638
+~~~
+
+#libicui18n
+~~~shell
+    #00 pc 000000000016ddc4  /system/lib64/libicui18n.so (_ZN6icu_5612RegexMatcher12MatchChunkAtEiaR10UErrorCode+872)
+    #01 pc 0000000000170f20  /system/lib64/libicui18n.so (_ZN6icu_5612RegexMatcher7matchesER10UErrorCode+364)
+    #02 pc 000000000001d850  /system/lib64/libjavacore.so
+    #03 pc 000000000080c1ac  /system/framework/arm64/boot.oat (offset 0x54d000) (java.util.regex.Matcher.matchesImpl+184)
+    #04 pc 000000000080d8ac  /system/framework/arm64/boot.oat (offset 0x54d000) (java.util.regex.Matcher.matches+88)
+    #05 pc 0000000002793400  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats.updateFragmentation+396)
+    #06 pc 000000000278a0dc  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats.resetCommon+280)
+    #07 pc 000000000279277c  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats.reset+56)
+    #08 pc 0000000002789040  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats.<init>+588)
+    #09 pc 0000000002788570  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats$1.createFromParcel+76)
+    #10 pc 00000000027885f4  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats$1.createFromParcel+48)
+    #11 pc 000000000147917c  /data/dalvik-cache/arm64/system@framework@services.jar@classes.dex (offset 0x1019000)
+~~~
+
+
