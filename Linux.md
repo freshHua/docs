@@ -82,5 +82,19 @@ encryptable=footer
 
 user nice system idle iowait  irq  softirq steal guest guest_nice
 
+### SHELL bash
+控制语句while
+~~~bash
+#!/bin/bash
+a=0
+while [ $a -lt 10 ]
+do
+   echo $a
+   a=`expr $a + 1`
+   uuid=$(blkid /dev/sdb$a)
+   echo ${uuid}
+done
+~~~
+
 
 

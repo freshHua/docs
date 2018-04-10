@@ -63,5 +63,50 @@ $:aarch64-linux-android-addr2line -e ${TARGET_OUTPUT}/symbols/system/lib64/libmi
     #10 pc 00000000027885f4  /system/framework/arm64/boot-framework.oat (offset 0x1812000) (com.android.internal.app.procstats.ProcessStats$1.createFromParcel+48)
     #11 pc 000000000147917c  /data/dalvik-cache/arm64/system@framework@services.jar@classes.dex (offset 0x1019000)
 ~~~
+frameworks/base/core/java/com/android/internal/app/procstats/ProcessStats.java
+ProcessStats -＞ reset -> resetCommon -> updateFragmentation
+读取文件/proc/pagetypeinfo,每一行正则表达式进行匹配
+~~~java
+private static final Pattern sPageTypeRegex = Pattern.compile(
+            "^Node\\s+(\\d+),.*. type\\s+(\\w+)\\s+([\\s\\d]+?)\\s*$");
+~~~
+进入java 通用库
+~~~java
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+~~~
+libcore/ojluni/src/main/java/java/util/regex/Matcher.java
+matches方法调用jni
+libcore/luni/src/main/native/java_util_regex_Matcher.cpp
+matchesImpl
+matchesImpl调用libicui18n.so
+使用工具aarch64-linux-android-addr2line分析
+~~~shell
+$:export PATH=${PATH}:prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
+$:aarch64-linux-android-addr2line -e ${TARGET_OUTPUT}/symbols/system/lib64/libicui18n.so -a 0000000000170f20
+$:/proc/self/cwd/external/icu/icu4c/source/i18n/rematch.cpp:1541
+$:aarch64-linux-android-addr2line -e ${TARGET_OUTPUT}/symbols/system/lib64/libicui18n.so -a 000000000016ddc4
+$:/proc/self/cwd/external/icu/icu4c/source/i18n/rematch.cpp:4373
+~~~
+最后定位代码，heap buffer overflow，产生SIGSEGV信号，system_server异常，android系统重启
+~~~cpp
+op      = (int32_t)pat[fp->fPatIdx];
+~~~
 
 
+###CPU，内存监控
+CPU占用情况
+~~~
+adb shell dumpsys cpuinfo
+~~~
+内存占用情况
+~~~
+adb shell dumpsys meminfo
+~~~
+内核节点
+~~~
+/proc/cpuinfo
+/sys/devices/system/cpu/
+/proc/stat
+/proc/$pid/smaps
+~~~
