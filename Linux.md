@@ -95,6 +95,30 @@ do
    echo ${uuid}
 done
 ~~~
-
+###数据库
+####postgresl
+切换到数据库
+~~~shell
+$ su - postgres 
+$ psql
+$ \l "列出数据库"
+$ DROP DATABASE数据库名; //删除数据库
+$ \q
+$ pg_dump reviewdb > reviewdb_20161222 "备份数据库"
+$ psql dbname < backup_file "恢复数据库"
+~~~
+###JAVA SSL
+在ubuntu14.04运行jenkins发现错误　
+~~~java
+java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be
+    non-empty
+~~~
+解决方法
+~~~shell
+$ update-ca-certificates -f 
+$ /var/lib/dpkg/info/ca-certificates-java.postinst configure 
+~~~
+### JENKINS
+系统配置，安装插件　
 
 

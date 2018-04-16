@@ -110,3 +110,14 @@ adb shell dumpsys meminfo
 /proc/stat
 /proc/$pid/smaps
 ~~~
+###Android编译
+~~~shell
+$ apt-get install make bison g++ g++-multilib　lib32z1 
+$ apt-get install libxml2-utils python-networkx build-essential u-boot-tools
+~~~
+###查看文件依赖包
+~~~shell
+$ apt-get install apt-file
+$ apt-file update
+$ apt-file search 文件
+~~~
