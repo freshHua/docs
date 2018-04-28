@@ -7,7 +7,7 @@
 [Desktop Entry]
 Name=Eclipse
 Type=Application
-Exec=/home/redbird/eclipse/jee-neon2/eclipse/eclipse
+Exec=${HOME}/eclipse/jee-neon2/eclipse/eclipse ://${HOME} 用户工作目录
 Terminal=false
 Icon=/home/redbird/eclipse/jee-neon2/eclipse/icon.xpm
 Comment=Integrated Development Environment
@@ -118,7 +118,15 @@ java.security.InvalidAlgorithmParameterException: the trustAnchors parameter mus
 $ update-ca-certificates -f 
 $ /var/lib/dpkg/info/ca-certificates-java.postinst configure 
 ~~~
-### JENKINS
-系统配置，安装插件　
+### Jenkins
+系统配置，安装插件
+* Email Extension Template Plugin
+* FTP publisher plugin
+* Gerrit Trigger
+* Publish Over FTP
+* Publish Over SSH
+
+版本自动构建过程
+![版本自动构建过程](./images/jenkins.png)
 
 
