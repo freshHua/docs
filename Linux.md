@@ -128,5 +128,73 @@ $ /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
 版本自动构建过程
 ![版本自动构建过程](./images/jenkins.png)
+###protobuf
+Nanopb C语言实现Google protobuf 协议库. 
+
+Protobuf消息定义
+消息由至少一个字段组合而成，类似于C语言中的结构。每个字段都有一定的格式。
+字段格式：限定修饰符 | 数据类型 | 字段名称 | = | 字段编码值 | [字段默认值]
+* 限定修饰符包含
+Required: 表示是一个必须字段，必须相对于发送方，在发送消息之前必须设置该字段的值，对于接收方，必须能够识别该字段的意思。发送之前没有设置required字段或者无法识别required字段都会引发编解码异常，导致消息被丢弃。
+Optional：表示是一个可选字段，可选对于发送方，在发送消息时，可以有选择性的设置或者不设置该字段的值。对于接收方，如果能够识别可选字段就进行相应的处理，如果无法识别，则忽略该字段，消息中的其它字段正常处理。---因为optional字段的特性，很多接口在升级版本中都把后来添加的字段都统一的设置为optional字段，这样老的版本无需升级程序也可以正常的与新的软件进行通信，只不过新的字段无法识别而已，因为并不是每个节点都需要新的功能，因此可以做到按需升级和平滑过渡。
+Repeated：表示该字段可以包含0~N个元素。其特性和optional一样，但是每一次可以包含多个值。可以看作是在传递一个数组的值。
+* 数据类型
+ 
+Protobuf定义了一套基本数据类型。几乎都可以映射到C++\Java等语言的基础数据类型.
+protobuf 数据类型 |描述 |打包 |C++语言映射 
+----|-----|----------
+bool|布尔类型| 1字节  | bool
+double | 64位浮点数 | N | double
+float | 32为浮点数 |N |float
+int32 |32位整数 |N |int
+uin32 |无符号32位整数 |N |unsigned int
+int64 |64位整数 |N |__int64
+uint64 |64为无符号整 |N |unsigned __int64
+sint32 |32位整数，处理负数效率更高 | N |int32
+sing64 |64位整数 处理负数效率更高 |N |__int64
+fixed32 |32位无符号整数 |4 |unsigned int32
+fixed64 |64位无符号整数 |8 |unsigned __int64
+sfixed32 |32位整数、能以更高的效率处理负数 |4 |unsigned int32
+sfixed64 |64为整数 |8 |unsigned __int64
+string |只能处理 ASCII字符 |N |std::string
+bytes |用于处理多字节的语言字符、如中文 |N |std::string
+enum |可以包含一个用户自定义的枚举类型uint32 |N(uint32) |enum
+message |可以包含一个用户自定义的消息类型 |N |object of class
+* 字段名称
+字段名称的命名与C、C++、Java等语言的变量命名方式几乎是相同的。
+* enum
+
+枚举的定义和C++相同，枚举值必须大于等于0的整数。使用分号(;)分隔枚举变量而不是C++语言中的逗号(,)
+
+###apt-get
+apt-get安装的时候出现
+E: 有未能满足的依赖关系。请尝试不指明软件包的名字来运行“apt-get -f install”(也可以指定一个解决办法)
+运行如下命令解决
+~~~shell
+$:sudo apt-get --fix-broken install
+~~~
+查找包的依赖关系
+
+~~~shell
+$: apt-cache depends  package_name
+~~~
+
+配置文件丢失，强行安装，如apache安装后，不小心把/etc/apache/里面的文件删除。
+-o DPkg::Options::="--force-confmiss" 进行重现按照恢复
+~~~shell
+$:apt-get -o DPkg::Options::="--force-confmiss" --reinstall install 
+~~~
+apt-get source packagename
+出现如下错误
+gpgv: Can't check signature: public key not found
+dpkg-source: warning: failed to verify signature on
+解决办法
+~~~shell
+$: gpg --keyserver keyserver.ubuntu.com --recv-keys A744BE93
+$: gpg --no-default-keyring -a --export 7ADF9466 | gpg --no-default-keyring --keyring ~/.gnupg/trustedkeys.gpg --import -
+~~~
+
+
+
 
 
