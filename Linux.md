@@ -194,6 +194,18 @@ $: gpg --keyserver keyserver.ubuntu.com --recv-keys A744BE93
 $: gpg --no-default-keyring -a --export 7ADF9466 | gpg --no-default-keyring --keyring ~/.gnupg/trustedkeys.gpg --import -
 ~~~
 
+###IP CONNTRACK
+/proc/net/ip_conntrack
+查看不同连接跟踪带有MARK值。
+
+###GIT
+git使用openssl
+~~~
+make configure
+./configure with-openssl 
+~~~
+
+
 
 
 

@@ -1,14 +1,8 @@
 # 记录
+$
+f(x) = \sqrt{3x-1} + (1+x)^2
+$
 
-$$
-s=\sum_1^n{n_i}
-$$
-$$
-[\sigma = \sqrt{ \frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2} ]
-$$
-
-$$\begin{matrix}
-1&0&0\\
-0&1&0\\
-0&0&1\\
-\end{matrix}$$
+$
+e = \lim_{n\to \infty}(1+\frac{1}{n})^n
+$

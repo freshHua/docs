@@ -114,6 +114,7 @@ adb shell dumpsys meminfo
 ~~~shell
 $ apt-get install make bison g++ g++-multilib　lib32z1 
 $ apt-get install libxml2-utils python-networkx build-essential u-boot-tools
+$ apt-get install mkisofs
 ~~~
 ###查看文件依赖包
 ~~~shell
@@ -121,3 +122,14 @@ $ apt-get install apt-file
 $ apt-file update
 $ apt-file search 文件
 ~~~
+###Binder
+####JAVA
+java实现相关class,IBinder,IInterface,Proxy,Binder
+
+Binder Proxy做为调用接口客户端用．
+~~~java
+asInterface 通过asInterface得到的其实是远程Service的本地“代理”，而代理对象的参数是远程的服务端“obj”  
+
+~~~
+Binder远程实现具体实现接口
+
