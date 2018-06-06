@@ -95,6 +95,8 @@ do
    echo ${uuid}
 done
 ~~~
+循环控制for
+
 ###数据库
 ####postgresl
 切换到数据库
@@ -204,6 +206,15 @@ git使用openssl
 make configure
 ./configure with-openssl 
 ~~~
+git clone --depth 
+
+###Core DUMP
+解除生产core dump文件限制
+~~~
+ulimit -c unlimited
+~~~
+###P2P
+节点发现发现种子节点
 
 
 
