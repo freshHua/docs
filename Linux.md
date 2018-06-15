@@ -215,9 +215,17 @@ ulimit -c unlimited
 ~~~
 ###P2P
 节点发现发现种子节点
-
-
-
+###VIM
+删除文件特定字符串
+~~~shell
+:%s/regex//g
+~~~
+###sshpass
+用于自动化脚本时，非交互式的登录过程，sshpass　-p password
+~~~shell
+# 免密码登录
+$ sshpass -p password ssh username@host
+~~~
 
 
 

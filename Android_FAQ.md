@@ -132,4 +132,5 @@ asInterface 通过asInterface得到的其实是远程Service的本地“代理�
 
 ~~~
 Binder远程实现具体实现接口
-
+###Manifest
+upstream: upstream指定git分支可以找到一个SHA1。用于同步revision锁定的manifest(-c 模式)。该模式可以避免同步整个ref空间。
