@@ -226,6 +226,15 @@ ulimit -c unlimited
 # 免密码登录
 $ sshpass -p password ssh username@host
 ~~~
+###IO多路复用
+select/poll/epoll
 
+select支持文件数量比较小，默认是1024
+
+epoll_create,epoll_ctl和epoll_wait，epoll_create是创建一个epoll句 柄；epoll_ctl是注册要监听的事件类型；epoll_wait则是等待事件的产生。
+
+###TIME_WAIT
+2MSL
+SOC_RESUEADDRESS
 
 
