@@ -141,6 +141,11 @@ SCHED_FIFO一旦占用cpu则一直运行。一直运行直到有更高优先级�
 SHCED_RR策略的进程的时间片用完，系统将重新分配时间片，并置于就绪队列尾。放在队列尾保证了所有具有相同优先级的RR任务的调度公平。
 实时进程为静态优先级 [0,MAX_RT_PRIO]
 
+TOP查看
+PR=NI+20
+
+Linux实际上实现了140个优先级范围，取值范围是从0-139，这个值越小，优先级越高。nice值的-20到19，映射到实际的优先级范围是100-139。实时进程优先级为[0-99]
+
 ###SATA
 SATA硬盘的write-through ,write-back
 ###中断
@@ -328,3 +333,9 @@ void init_completion(struct completion *x);
 
 ###volatile
 volatile 修饰，则会从内存重新装载内容，而不是直接从寄存器拷贝内容
+1.中断程序
+2.多线程
+###自旋锁
+~~~cpp
+spin_lock
+~~~

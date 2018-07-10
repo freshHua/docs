@@ -237,4 +237,22 @@ epoll_create,epoll_ctl和epoll_wait，epoll_create是创建一个epoll句 柄；
 2MSL
 SOC_RESUEADDRESS
 
+###BIG/LITTLE ENDIAN
+数据在内存中的存储顺序,LBS,MBS
+高字节在低位，BIG ENDIAN
+高字节在高位，LITTLE ENDIAN
+~~~cpp
+typedef union{
+	char ch[2];
+	unsigned short s;
+}endian_test;
+endian_test value;
+value.ch[0]= 'a';
+value.cha[1] = 'b'
+if( (char)s == 'b'){
+  LITTLE ENDIAN
+}else{
+  BIG ENDIAN
+}
+~~~
 
