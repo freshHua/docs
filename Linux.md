@@ -207,6 +207,11 @@ make configure
 ./configure with-openssl 
 ~~~
 git clone --depth 
+打标签
+~~~
+git tag -a SPF.R1.0-00005.0 -m "SPF.R1.0-00005.0"a
+git push msp SPF.R1.0-00008.0 #推送tag
+~~~
 
 ###Core DUMP
 解除生产core dump文件限制
@@ -255,4 +260,22 @@ if( (char)s == 'b'){
   BIG ENDIAN
 }
 ~~~
+###Makfile 
+静态模式规则
+~~~shell
+目标列表：目标模式：依赖模式
+    命令行
+~~~
+###awk
+~~~bash
+repo list | awk -F: '{ print $1 }' > projects
 
+pj=$(cat projects)
+
+for f in $pj;
+  do
+        echo $f
+  done
+
+
+~~~
