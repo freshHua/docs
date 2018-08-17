@@ -157,6 +157,9 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler, irq_handler_t 
 ~~~shell
 cat /proc/interrupts
 ~~~
+~~~cpp
+void synchronize_irq(unsigned int irq);
+~~~
 ###系统调用
 ###Device Tree
 ####语法
@@ -338,4 +341,26 @@ volatile 修饰，则会从内存重新装载内容，而不是直接从寄存�
 ###自旋锁
 ~~~cpp
 spin_lock
+~~~
+###原子操作
+原子操作是不可分割，不可中断的。
+###BUILD WARNING
+**ISO C90 forbids mixed declarations and code**
+变量定义之前任何一条非变量定义的语句(注意：语句是会带分号的)都会引起这个警告！
+###Sysrq
+Linux内核的调试工具
+~~~
+#echo m > /proc/sysrq-trigger 导出内存分配信息
+
+#echo t > /proc/sysrq-trigger 导出当前任务状态信息
+
+#echo p > /proc/sysrq-trigger 导出当前CPU寄存器和标志位信息
+
+#echo c > /proc/sysrq-trigger 产生空指针panic事件，人为导致系统崩溃
+
+#echo s > /proc/sysrq-trigger 即时同步所有挂载的文件系统
+
+#echo u > /proc/sysrq-trigger 即时重新挂载所有的文件系统为只读
+
+#echo w > /proc/sysrq-trigger转储处于uninterruptable阻塞状态的任务
 ~~~

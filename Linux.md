@@ -2,7 +2,7 @@
 ========================================
 
 ###桌面快捷方式
-\${HOME}local/share/applications为快捷方式配置目录,进入${HOME}local/share/applications目录，创建相关应用desktop文件，如eclipse.desktop．
+\${HOME}.local/share/applications为快捷方式配置目录,进入${HOME}.local/share/applications目录，创建相关应用desktop文件，如eclipse.desktop．
 ~~~shell
 [Desktop Entry]
 Name=Eclipse
@@ -278,4 +278,12 @@ for f in $pj;
   done
 
 
+~~~
+###Kernel Proc
+/proc/cmdline
+/proc/cpuinfo
+###linux挂载samba共享文件夹
+~~~
+sudo apt-get install cifs-utils
+mount -t cifs //10.0.0.7/Public /home/binaryhat/Public -o username=yourname,password=yourpwd,gid=0,uid=0
 ~~~
