@@ -1,9 +1,10 @@
 ###进程
-进程描述符，current为当前进程描述符宏中的thread_info．
+进程描述符，current为当前进程描述符宏中的task_struct．
+
+
 ~~~cpp
-struct task_struct {
-	struct thread_info *thread_info;
-};
+#define current get_current()
+//arch/arm64/include/asm/current.h
 ~~~
 进程时间片：分配可运行程序的处理器时间段，默认时间片的10ms
 
@@ -52,6 +53,11 @@ put_cpu() //preempt_enable()一样
 preempt_enable_no_resched() // preempt_count -1，不立即抢占式调度 
 put_cpu＿no_resched()　//preempt_enable_no_resched一样
 ~~~
+
+抢占的时机：
+1.中断返回内核之前
+2.在锁释放的时候
+
 
 ###softIRQ
 内核提供的一种延迟执行机制,tasklet，高分辨率timer.
@@ -364,3 +370,22 @@ Linux内核的调试工具
 
 #echo w > /proc/sysrq-trigger转储处于uninterruptable阻塞状态的任务
 ~~~
+###SYSFS
+
+~~~cpp
+class_create（THIS_MODULE,name) //创建/sys/class/<name>　目录
+class_create_file /创建/sys/class/<name>/创建文件
+~~~
+###SP,PC,LR
+
+ARM指令是三级流水线，取指，译指,执行
+
+ARM有如下几种工作模式：用户模式，FIQ模式，IRQ模式，系统模式，终止模式，数据访问终止模式，未定义模式。
+
+PC程序计数器，PC指向的是正在取指的地址，那么cpu正在译指的指令地址是PC-4（假设在ARM状态 下，一个指令占4个字节），cpu正在执行的指令地址是PC-8，也就是说PC所指向的地址和现在所执行的指令地址相差8。 
+
+LR链接寄存器，通常用来保存函数的返回地址。
+###Runtime PM
+
+###PM
+![PM](./images/PM.jpeg)

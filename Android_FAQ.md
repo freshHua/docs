@@ -137,4 +137,14 @@ upstream: upstream指定git分支可以找到一个SHA1。用于同步revision�
 ###DISP TE
 TE tearing Effect
 
+###Selinux
+~~~
+08-08 08:00:38.567  4056  4056 W chre    : type=1400 audit(0.0:239): avc: denied { read } for name="adsp" dev="dm-0" ino=2632 scontext=u:r:chre:s0 tcontext=u:object_r:system_file:s0 tclass=dir permissive=0
+~~~
 
+~~~
+scontext tcontext tclass avc denied
+allow chre system_file read
+~~~
+
+###Android Verified Boot 2.0

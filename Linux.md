@@ -209,8 +209,9 @@ make configure
 git clone --depth 
 打标签
 ~~~
-git tag -a SPF.R1.0-00005.0 -m "SPF.R1.0-00005.0"a
+git tag -a SPF.R1.0-00005.0 -m "SPF.R1.0-00005.0"
 git push msp SPF.R1.0-00008.0 #推送tag
+git push origin --delete tag <tagname> #删除远程分支
 ~~~
 
 ###Core DUMP
@@ -287,3 +288,7 @@ for f in $pj;
 sudo apt-get install cifs-utils
 mount -t cifs //10.0.0.7/Public /home/binaryhat/Public -o username=yourname,password=yourpwd,gid=0,uid=0
 ~~~
+###SUBLIME
+自动缩进：Ctrl+A选中全部内容，然后在菜单中选择Edit->Line->Reindent
+
+

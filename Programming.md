@@ -104,7 +104,13 @@ capture list
 ###finaL
 指定派生类不能覆写虚函数，或类不能被继承。
 
+###Python数学公司
 
+**math.sqrt(x)**计算$\sqrt{x}$
+
+**进制转换**　bin二进制, oct八进制, int十进制,hex十六进制
+
+**pow(x, y)**计算　$x^y$
 
 
 
