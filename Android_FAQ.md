@@ -148,3 +148,24 @@ allow chre system_file read
 ~~~
 
 ###Android Verified Boot 2.0
+
+###Systrace
+配置环境
+~~~bash
+export ANDROID_PROFILE=${HOME}/Android/Sdk/platform-tools
+alias st-start='python ${ANDROID_PROFILE}/systrace/systrace.py'
+~~~
+Kernel 开启trace功能
+~~~bash
+echo 1 > /sys/kernel/debug/tracing/tracing_on
+~~~
+
+###Auto Suspend
+~~~cpp
+wakeup_count 
+#kernel 代码　drivers/base/power/wakeup.c
+~~~
+
+###CTS
+~~~
+~~~

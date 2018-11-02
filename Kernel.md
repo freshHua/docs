@@ -60,7 +60,29 @@ put_cpu＿no_resched()　//preempt_enable_no_resched一样
 
 
 ###softIRQ
-内核提供的一种延迟执行机制,tasklet，高分辨率timer.
+内核提供的一种延迟执行机制,tasklet，高分辨率timer.软件中断的资源是有限的，内核目前只实现了10种类型的软件中断.
+
+~~~cpp
+enum
+{
+	HI_SOFTIRQ=0,//处理高优先级的tasklet
+	TIMER_SOFTIRQ, //时钟相关的tasklet
+	NET_TX_SOFTIRQ,
+	NET_RX_SOFTIRQ,
+	BLOCK_SOFTIRQ,
+	IRQ_POLL_SOFTIRQ,
+	TASKLET_SOFTIRQ,//出来常规的tasklet
+	SCHED_SOFTIRQ,
+	HRTIMER_SOFTIRQ, /* Unused, but kept as tools rely on the
+			    numbering. Sigh! */
+	RCU_SOFTIRQ,    /* Preferable RCU should always be the last softirq */
+
+	NR_SOFTIRQS
+};
+~~~
+
+内核为每个cpu创建了一个用于执行软件中断的守护进程ksoftirqd/n (0~N)
+
 ###自旋锁
 SMP多处理器中并发访问临界区，防止内核抢占造成的竞争。
 用途高效的对互斥资源进行保护，同步临界区时间不能过长，处理过程中CPU不能处于休眠状态．
@@ -68,12 +90,33 @@ SMP多处理器中并发访问临界区，防止内核抢占造成的竞争。
 ###工作队列
 工作推后执行的形式.工作队列可以把工作推后，交由一个内核线程去执行.运行在进程上下文中执行
 ~~~ cpp
+void work_handler(struct work_struct *work); 
+#工作队列处理函数
+int schedule_work(struct work_struct *work); 
+＃对工作队列进行调度
 struct workqueue_struct *create_workqueue(const char *name);
 ## 内核会在系统中的每个处理器上为该工作队列创建专用的线程
 struct workqueue_struct * workqueue_singlethread_workqueue(const char *name);
 ## 创建一个专用的线程
+
+
 ~~~
 ###Tasklet
+Tasklet为linux中断处理机制中的软中断延迟机制,是建立在软中断上的一种延迟执行机制，它的实现基于TASKLET_SOFTIRQ和HI_SOFTIRQ这两个软中断类型。.相同类型的tasklet为串行化执行
+~~~cpp
+struct tasklet_struct
+{
+	struct tasklet_struct *next;
+	unsigned long state;
+	atomic_t count;
+	void (*func)(unsigned long);
+	unsigned long data;
+};
+
+DECLARE_TASKLET(name, func, data)
+DECLARE_TASKLET_DISABLED(name, func, data)
+
+~~~
 
 ###页高速缓存
 页高速缓存是内核实现的缓存技术，把数据缓存到物理内存，减少对存储的IO操作。理论上，如有足够大的内存，分配的页高速缓存足够大，读速度可以接近内存的速度．
@@ -240,6 +283,12 @@ const struct of_device_id *of_match_node(
 struct device_node *of_get_child_by_name(const struct device_node *node,
 				const char *name);//获取子节点device_node
 ~~~
+
+~~~cpp
+//得到属性值中数据的数量
+int of_property_count_elems_of_size(const struct device_node *np,
+			const char *propname, int elem_size);
+~~~
 ####REG
 ~~~
 #address-cells = <1>;
@@ -348,6 +397,38 @@ volatile 修饰，则会从内存重新装载内容，而不是直接从寄存�
 ~~~cpp
 spin_lock
 ~~~
+###读写自旋锁
+
+读写自旋锁除了和普通自旋锁一样有自旋特性以外，还有以下特点： 
+* 读锁之间是共享的 
+  即一个线程持有了读锁之后，其他线程也可以以读的方式持有这个锁
+* 写锁之间是互斥的 
+  即一个线程持有了写锁之后，其他线程不能以读或者写的方式持有这个锁
+* 读写锁之间是互斥的 
+  即一个线程持有了读锁之后，其他线程不能以写的方式持有这个锁
+ 
+~~~cpp
+#include <linux/rwlock.h>
+rwlock_t pm_lock;
+unsigned long flags;
+rwlock_init(&pm_lock);
+read_lock_irqsave(&pm_lock,flags);//存储本地中断的当前状态，禁止本地中断并获得指定读锁
+//保护区
+read_unlock_irqrestore(&pm_lock,flags); //释放指定的读锁并将本地中断恢复到指定前的状态
+write_lock_irq(&pm_lock);
+//保护区
+write_unlock_irq(&pm_lock);
+ ~~~
+
+~~~cpp
+read_lock_bh(lock)
+读者也可以用它来获得读写锁，与与read_lock不同的是，该宏还同时失效了本地的软中断。
+
+write_lock_bh(lock)
+写者也可以用它来获得读写锁，与write_lock不同的是，该宏还同时失效了本地的软中断。
+~~~
+ 
+
 ###原子操作
 原子操作是不可分割，不可中断的。
 ###BUILD WARNING
@@ -389,3 +470,46 @@ LR链接寄存器，通常用来保存函数的返回地址。
 
 ###PM
 ![PM](./images/PM.jpeg)
+~~~cpp
+./kernel/power/suspend.c
+~~~
+~~~cpp
+int pm_suspend(suspend_state_t state)
+~~~
+
+###TRACE
+trace跟踪具体某个进程的内核函数调用过程.
+设备trace
+~~~bash
+/sys/kernel/debug/tracing
+/d/tracing
+$ echo > /d/tracing/set_event //disable all events
+$ echo function > /d/tracing/current_tracer  //function为追踪的类型
+$ echo [pid] > /d/tracing/set_ftrace_pid   //设置要追踪的进程
+$ echo 1 > /d/tracing/tracing_on  //开启追踪
+~~~
+~~~bash
+atrace -z -b 40000 gfx input view wm am hal res dalvik rs sched freq idle  -t 60 > /data/local/tmp/trace_output &
+~~~
+~~~bash
+echo > /d/tracing/set_event
+echo > /sys/kernel/debug/tracing/trace
+echo 20960 > /sys/kernel/debug/tracing/buffer_size_kb
+echo 1 > /d/tracing/events/sde/tracing_mark_write/enable
+echo 1 > /d/tracing/events/power/suspend_resume/enable
+echo 1 > /d/tracing/tracing_on
+~~~
+~~~
+atrace -z -b 40000 power  -t 120 > /data/local/tmp/trace_output &
+debug.atrace.tags.enableflags
+~~~
+###KALLSYMS
+~~~cpp
+ int sprint_symbol(char *buffer, unsigned long address);
+ //通过函数地址，查找函数符号名
+~~~
+~~~
+echo -n "file wsa881x.c +p" > /sys/kernel/debug/dynamic_debug/control      
+echo -n "file soundwire.c +p" > /sys/kernel/debug/dynamic_debug/control
+echo -n "file wsa881x-temp-sensor.c +p" > /sys/kernel/debug/dynamic_debug/control  
+~~~

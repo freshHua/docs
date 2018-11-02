@@ -196,6 +196,13 @@ $: gpg --keyserver keyserver.ubuntu.com --recv-keys A744BE93
 $: gpg --no-default-keyring -a --export 7ADF9466 | gpg --no-default-keyring --keyring ~/.gnupg/trustedkeys.gpg --import -
 ~~~
 
+###APT查看文件依赖包
+~~~shell
+$ apt-get install apt-file
+$ apt-file update
+$ apt-file search 文件
+~~~
+
 ###IP CONNTRACK
 /proc/net/ip_conntrack
 查看不同连接跟踪带有MARK值。
