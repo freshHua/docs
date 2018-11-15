@@ -70,6 +70,16 @@ Node    0, zone    DMA32, type      Movable   1862   1665   1697    885    344  
 regex = "^Node\\s+(\\d+),.*. type\\s+(\\w+)\\s+([\s\d]+?)\s*$";
 ~~~
 
+###正则表达式用例
+~~~bash
+有字符串,如下
+<project path="external/mksh" name="platform/external/mksh" groups="pdk" />
+提取path=""内容
+ sed 's/.*<.*path="\(.*\)".*name.*>.*/\1/g'
+ 
+~~~
+
+
 ###EXT4加密属性
 强制加密forceencrypt=footer，无法修改或删除文件
 encryptable=footer
@@ -297,5 +307,15 @@ mount -t cifs //10.0.0.7/Public /home/binaryhat/Public -o username=yourname,pass
 ~~~
 ###SUBLIME
 自动缩进：Ctrl+A选中全部内容，然后在菜单中选择Edit->Line->Reindent
+
+###连接android设备
+
+adb shell，会提示insufficient permissions for device，输入adb devices，设备名称会显示 ???????。
+~~~bash
+lsusb 
+获取 idVendor,idProduct
+~~~
+
+
 
 
