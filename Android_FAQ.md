@@ -167,5 +167,8 @@ wakeup_count
 ~~~
 
 ###CTS
-~~~
-~~~
+
+###REPO
+manifest 可以使用include包含其他manifest文件
+如
+<include name=".xml" />
