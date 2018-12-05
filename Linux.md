@@ -314,7 +314,11 @@ adb shell，会提示insufficient permissions for device，输入adb devices，�
 ~~~bash
 lsusb 
 获取 idVendor,idProduct
+/etc/udev/rules.d
+创建文件
+echo "SUBSYSTEM=="usb", ATTR{idVendor}=="ID", MODE="0666", GROUP="plugdev" > 51-android.rules
 ~~~
+
 
 
 
